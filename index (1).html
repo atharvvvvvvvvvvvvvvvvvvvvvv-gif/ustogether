@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>For Aayushi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@300;400;500&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#e9d9bd; --ink:#2c1f16; --rose:#a3564f; --gold:#a9803f; --sage:#5c6a3d;
+  --kraft:#c9a878; --rule:rgba(44,31,22,.28); --card:#f3e6cd; --burn:#3c2410;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --paper:#20160f; --ink:#ecdcc0; --card:#2c2016; --rule:rgba(236,220,192,.25); }
+}
+:root[data-theme="dark"]{ --paper:#20160f; --ink:#ecdcc0; --card:#2c2016; --rule:rgba(236,220,192,.25); }
+*{box-sizing:border-box;}
+html{height:100%; scroll-padding-top:env(safe-area-inset-top,0px);}
+body{
+  margin:0; height:100%; color:var(--ink); font-family:'Jost',system-ui,sans-serif; overflow:hidden;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(60,36,16,.10), transparent 40%),
+    radial-gradient(circle at 88% 82%, rgba(60,36,16,.12), transparent 40%),
+    repeating-linear-gradient(115deg, rgba(44,31,22,.035) 0 2px, transparent 2px 14px),
+    var(--paper);
+}
+h1,.display{font-family:'Cormorant Garamond',Georgia,serif;}
+.stage{position:relative; height:100%; width:100%;}
+.page{
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  padding:9vh 7vw; opacity:0; pointer-events:none;
+  transform:translateY(5vh) scale(.98);
+  transition:transform .65s cubic-bezier(.22,.68,.36,1), opacity .5s ease;
+}
+.page.active{opacity:1; pointer-events:auto; transform:translateY(0) scale(1);}
+.page.before{opacity:0; transform:translateY(-5vh) scale(.98);}
+.page.after{opacity:0; transform:translateY(5vh) scale(.98);}
+.inner{max-width:920px; width:100%;}
+.centered{text-align:center; margin:0 auto;}
+.tape-rule{height:1px; width:96px; margin:.9rem auto; background:repeating-linear-gradient(90deg, var(--rule) 0 2px, transparent 2px 9px);}
+.tape-rule.left{margin:.9rem 0;}
+h1.display{font-weight:600; line-height:1.05; margin:0 0 .3rem;}
+h1.hero{font-size:clamp(2.4rem,7vw,4.4rem);}
+p.body{font-size:clamp(1rem,1.9vw,1.2rem); line-height:1.75; font-weight:300; max-width:520px;}
+.centered p.body{margin:0 auto;}
+.quote{font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:600; color:var(--rose); font-size:clamp(1.7rem,4.4vw,2.6rem); line-height:1.3; max-width:680px; margin:0 auto;}
+.split{display:grid; grid-template-columns:1.05fr 1fr; gap:5vw; align-items:center; text-align:left;}
+.num{font-style:italic; font-weight:600; font-size:clamp(3.4rem,10vw,6.5rem); line-height:.9; color:var(--rose); margin:0 0 .5rem;}
+
+.card{ justify-self:center; position:relative; filter:drop-shadow(0 14px 22px rgba(20,10,4,.35)); transform:rotate(-2.5deg); transition:transform .3s ease; }
+.card.alt{transform:rotate(2deg);}
+.card:hover{transform:rotate(0deg) scale(1.03);}
+.photo{
+  width:min(60vw,300px); height:min(60vw,300px); cursor:pointer; background:var(--kraft);
+  clip-path:polygon(1% 3%,14% 0%,29% 4%,44% 0%,60% 3%,76% 0%,91% 4%,100% 12%,97% 27%,100% 42%,96% 58%,100% 73%,97% 88%,100% 100%,84% 97%,68% 100%,52% 96%,36% 100%,20% 97%,4% 100%,0% 85%,4% 68%,0% 52%,3% 36%,0% 20%);
+  display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative;
+}
+.photo img{width:100%; height:100%; object-fit:cover; display:none; filter:sepia(.4) contrast(1.05) brightness(.94);}
+.photo:has(img[src]:not([src=""])) span{display:none;}
+.photo span{font-size:.76rem; color:var(--ink); padding:1rem; opacity:.6;}
+.photo::after{content:"";position:absolute; inset:0; pointer-events:none;
+  background:radial-gradient(circle at 15% 12%, rgba(60,36,16,.5), transparent 42%),
+             radial-gradient(circle at 88% 90%, rgba(60,36,16,.4), transparent 38%);}
+.cap{font-family:'Caveat',cursive; font-size:1.15rem; color:var(--rose); margin-top:6px; text-align:center;}
+
+.swatches{display:flex; gap:16px; flex-wrap:wrap; justify-content:center; margin:1.6rem 0;}
+.swatch{width:104px;}
+.chip{width:104px; height:66px; box-shadow:0 6px 16px rgba(20,10,4,.28);}
+.swatch small{display:block; font-family:'Caveat',cursive; font-size:1.05rem; color:var(--ink); margin-top:6px; opacity:.85;}
+
+.tag{position:fixed; top:calc(18px + env(safe-area-inset-top,0px)); left:18px; z-index:6;
+  border:1px dashed var(--rule); padding:6px 14px; transform:rotate(-3deg); background:var(--paper);
+  display:flex; align-items:center; gap:6px;}
+.tag i{width:6px; height:6px; border-radius:50%; border:1px solid var(--rule); display:block;}
+.tag span{font-family:'Caveat',cursive; font-size:1.15rem; color:var(--rose); font-weight:700;}
+
+.deco{position:absolute; width:58px; height:58px; opacity:0; z-index:1; transition:opacity .8s ease .1s, transform .8s ease .1s;}
+.page.active .deco{opacity:.55;}
+.deco.tl{top:6%; left:4%; transform:translate(-14px,-14px) rotate(-10deg);}
+.page.active .deco.tl{transform:translate(0,0) rotate(-10deg);}
+.deco.br{bottom:8%; right:4%; transform:translate(14px,14px) rotate(12deg);}
+.page.active .deco.br{transform:translate(0,0) rotate(12deg);}
+
+.sun-wrap{width:130px; height:158px; margin:0 auto 1rem; opacity:0; transform:translateY(24px) scale(.3); pointer-events:none;}
+.sun-wrap.pop{animation:sunpop 1.3s cubic-bezier(.34,1.56,.64,1) forwards;}
+.sun-wrap svg{width:100%; height:100%; display:block;}
+@keyframes sunpop{
+  0%{opacity:0; transform:translateY(24px) scale(.3);}
+  60%{opacity:1; transform:translateY(-4px) scale(1.06);}
+  100%{opacity:1; transform:translateY(0) scale(1);}
+}
+
+.mini{position:absolute; width:74px; height:74px; overflow:hidden; box-shadow:0 8px 18px rgba(20,10,4,.32); background:var(--kraft); z-index:2;
+  opacity:0; transition:opacity .7s ease .12s, transform .7s cubic-bezier(.22,.68,.36,1) .12s;}
+.mini img{width:100%; height:100%; object-fit:cover; display:none; filter:sepia(.35) contrast(1.05) brightness(.95);}
+.mini:has(img[src]:not([src=""])) span{display:none;}
+.mini span{display:block; font-size:.52rem; padding:6px; opacity:.55; line-height:1.2;}
+.mini.a{top:9%; right:5%; transform:translate(34px,-34px) rotate(9deg);}
+.page.active .mini.a{opacity:1; transform:translate(0,0) rotate(9deg);}
+.mini.b{bottom:12%; left:4%; transform:translate(-34px,34px) rotate(-7deg);}
+.page.active .mini.b{opacity:1; transform:translate(0,0) rotate(-7deg);}
+
+.note{font-family:'Caveat',cursive; font-size:1.15rem; color:var(--rose); margin-top:.7rem; opacity:.9;}
+
+@media (max-width:720px){ .split{grid-template-columns:1fr; text-align:center;} .mini{width:54px; height:54px;} }
+</style>
+</head>
+<body>
+<div class="tag"><i></i><span>Aayushi</span></div>
+<div class="stage" id="stage"></div>
+
+
+<script>
+const DECO = {
+  butterfly:`<svg viewBox="0 0 60 60"><g fill="none" stroke="var(--gold)" stroke-width="1.3">
+    <path d="M28 30 C10 10, 4 20, 10 30 C4 40, 10 50, 28 30 Z"/>
+    <path d="M32 30 C50 10, 56 20, 50 30 C56 40, 50 50, 32 30 Z"/>
+    <line x1="30" y1="18" x2="30" y2="44"/></g></svg>`,
+  leaf:`<svg viewBox="0 0 60 60"><g fill="none" stroke="var(--sage)" stroke-width="1.3">
+    <path d="M30 10 C46 20, 46 44, 30 52 C14 44, 14 20, 30 10 Z"/><line x1="30" y1="12" x2="30" y2="50"/></g></svg>`
+};
+const decoOrder = ['butterfly','leaf'];
+
+const sunSVG = `<svg viewBox="0 0 160 200" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="var(--ink)" stroke-width="1.4" stroke-linejoin="round">
+    <path d="M80 120 C78 150 82 175 80 195" fill="none" stroke="var(--sage)" stroke-width="3"/>
+    <path d="M80 152 C60 150 50 162 46 174" fill="none" stroke="var(--sage)" stroke-width="2.4"/>
+    <g fill="var(--gold)">
+      <path d="M80 78 C70 55 68 30 80 8 C92 30 90 55 80 78Z"/>
+      <path d="M80 78 C70 55 68 30 80 8 C92 30 90 55 80 78Z" transform="rotate(30 80 78)"/>
+      <path d="M80 78 C70 55 68 30 80 8 C92 30 90 55 80 78Z" transform="rotate(60 80 78)"/>
+      <path d="M80 78 C70 55 68 30 80 8 C92 30 90 55 80 78Z" transform="rotate(90 80 78)"/>
+      <path d="M80 78 C70 55 68 30 80 8 C92 30 90 55 80 78Z" transform="rotate(120 80 78)"/>
+      <path d="M80 78 C70 55 68 30 80 8 C92 30 90 55 80 78Z" transform="rotate(150 80 78)"/>
+      <path d="M80 78 C70 55 68 30 80 8 C92 30 90 55 80 78Z" transform="rotate(180 80 78)"/>
+      <path d="M80 78 C70 55 68 30 80 8 C92 30 90 55 80 78Z" transform="rotate(210 80 78)"/>
+      <path d="M80 78 C70 55 68 30 80 8 C92 30 90 55 80 78Z" transform="rotate(240 80 78)"/>
+      <path d="M80 78 C70 55 68 30 80 8 C92 30 90 55 80 78Z" transform="rotate(270 80 78)"/>
+      <path d="M80 78 C70 55 68 30 80 8 C92 30 90 55 80 78Z" transform="rotate(300 80 78)"/>
+      <path d="M80 78 C70 55 68 30 80 8 C92 30 90 55 80 78Z" transform="rotate(330 80 78)"/>
+    </g>
+    <circle cx="80" cy="78" r="20" fill="var(--rose)"/>
+    <g fill="var(--burn)" stroke="none">
+      <circle cx="72" cy="72" r="2"/><circle cx="84" cy="70" r="2"/><circle cx="90" cy="82" r="2"/>
+      <circle cx="76" cy="86" r="2"/><circle cx="88" cy="88" r="2"/><circle cx="70" cy="82" r="2"/>
+    </g>
+    <path d="M60 167 C45 162 38 172 34 182 C50 184 58 178 60 167Z" fill="var(--sage)" stroke-width="1.1"/>
+  </g>
+</svg>`;
+
+const pages = [
+  { layout:'centered', title:"Aayushi", body:"A few honest things, written for you. Scroll, or press next, whenever you're ready.", note:"Every story worth telling starts with honesty.", miniA:"mini-p0-a.jpg", miniB:"mini-p0-b.jpg" },
+  { layout:'centered', title:"About the transparency I owed you", body:"About the third person — I should have told you everything, plainly, from the start. I wasn't as open as you deserved, and I'm sorry for that. You should never have had to wonder.", miniA:"mini-p1-a.jpg", miniB:"mini-p1-b.jpg" },
+  { layout:'quote', quote:"No relationship is perfect. Ours has had real, hard moments. That doesn't mean it isn't worth protecting — it means it's real.", miniA:"mini-p2-a.jpg", miniB:"mini-p2-b.jpg" },
+  { layout:'split', num:"26.12", title:"The day we first met", body:"Tap the photo for what I remember from that day.", note:"The first spark that started it all.", photo:"photo-first-meet.jpg", miniA:"mini-p3-a.jpg", miniB:"mini-p3-b.jpg" },
+  { layout:'centered', title:"How it felt", body:"Add your memory of this day here — what you noticed about her, what you talked about, what made you smile.", note:"Some days write themselves into your heart.", miniA:"mini-p4-a.jpg", miniB:"mini-p4-b.jpg" },
+  { layout:'centered', title:"When she made the trip", body:"You came all the way from Pune to Mumbai to meet me. That mattered more than I ever said out loud. Starting over — real understanding, real effort — begins with moments exactly like that one.", note:"Distance means nothing when someone means everything.", miniA:"mini-p5-a.jpg", miniB:"mini-p5-b.jpg" },
+  { layout:'split', num:"24.07", title:"The last time we met", body:"Tap the photo for that memory.", note:"Every meeting with you still feels like the first.", photo:"photo-recent-meet.jpg", miniA:"mini-p6-a.jpg", miniB:"mini-p6-b.jpg" },
+  { layout:'centered', title:"How it felt", body:"Add your memory of this more recent day here.", miniA:"mini-p7-a.jpg", miniB:"mini-p7-b.jpg" },
+  { layout:'split', num:"28.05", title:"Happy birthday, Aayushi", body:"Tap the photo.", note:"Here's to you — today, and every day after.", photo:"photo-birthday.jpg", miniA:"mini-p8-a.jpg", miniB:"mini-p8-b.jpg" },
+  { layout:'swatches', title:"The good things about you", body:"Some of what makes you, you.", miniA:"mini-p9-a.jpg", miniB:"mini-p9-b.jpg" },
+  { layout:'quote', quote:"I love her so much, and I am sorry. New start. Zero assumptions. Just understanding.", miniA:"mini-p10-a.jpg", miniB:"mini-p10-b.jpg" }
+];
+const swatchList = [
+  {label:"caring", color:"var(--rose)"},
+  {label:"creative", color:"var(--gold)"},
+  {label:"fashion designer", color:"var(--sage)"},
+  {label:"tired of fixing this \u2014 still worth it", color:"var(--ink)"}
+];
+
+const stage = document.getElementById('stage');
+let idx = 0;
+
+pages.forEach((p, i) => {
+  const div = document.createElement('div');
+  div.className = 'page';
+  div.id = 'p' + i;
+  const decoA = DECO[decoOrder[i % 2]], decoB = DECO[decoOrder[(i+1) % 2]];
+  const noteHtml = p.note ? `<div class="note">${p.note}</div>` : '';
+  const sunHtml = i === 0 ? `<div class="sun-wrap" id="sunWrap">${sunSVG}</div>` : '';
+  let inner = `<div class="deco tl">${decoA}</div><div class="deco br">${decoB}</div>
+    <div class="mini a"><img src="${p.miniA}" alt=""><span>photo</span></div>
+    <div class="mini b"><img src="${p.miniB}" alt=""><span>photo</span></div>`;
+  if (p.layout === 'quote') {
+    inner += `<div class="inner centered"><div class="quote">${p.quote}</div>${noteHtml}</div>`;
+  } else if (p.layout === 'swatches') {
+    inner += `<div class="inner centered"><div class="tape-rule"></div><h1 class="display hero">${p.title}</h1><p class="body">${p.body}</p>
+      <div class="swatches">${swatchList.map(s=>`<div class="swatch"><div class="chip" style="background:${s.color}"></div><small>${s.label}</small></div>`).join('')}</div>${noteHtml}</div>`;
+  } else if (p.layout === 'split') {
+    inner += `<div class="inner split">
+      <div><div class="num">${p.num}</div><div class="tape-rule left"></div><h1 class="display" style="font-size:clamp(1.7rem,4vw,2.6rem)">${p.title}</h1><p class="body">${p.body}</p>${noteHtml}</div>
+      <div class="card${i%2?' alt':''}"><div class="photo" data-next="1"><img src="${p.photo}" alt=""><span>place ${p.photo} here</span></div><div class="cap">tap for that day's memory &rsaquo;</div></div>
+    </div>`;
+  } else {
+    inner += `<div class="inner centered">${sunHtml}<div class="tape-rule"></div><h1 class="display hero">${p.title}</h1><p class="body">${p.body}</p>${noteHtml}</div>`;
+  }
+  div.innerHTML = inner;
+  stage.appendChild(div);
+  const photoEl = div.querySelector('.photo');
+  if (photoEl) photoEl.addEventListener('click', () => go(idx + 1));
+});
+
+function render(prevIdx){
+  pages.forEach((_, i) => {
+    const el = document.getElementById('p'+i);
+    el.classList.remove('active','before','after');
+    el.classList.add(i===idx ? 'active' : (i<idx ? 'before' : 'after'));
+  });
+  const sunWrap = document.getElementById('sunWrap');
+  if (sunWrap) {
+    if (idx === 0) {
+      sunWrap.classList.remove('pop'); void sunWrap.offsetWidth; sunWrap.classList.add('pop');
+    } else {
+      sunWrap.classList.remove('pop');
+    }
+  }
+}
+function go(i){
+  const prevIdx = idx;
+  idx = Math.max(0, Math.min(pages.length-1, i));
+  if (idx !== prevIdx) render(prevIdx);
+}
+document.addEventListener('keydown', e => { if(e.key==='ArrowRight') go(idx+1); if(e.key==='ArrowLeft') go(idx-1); });
+
+let wheelLock=false;
+document.getElementById('stage').addEventListener('wheel', e => {
+  e.preventDefault();
+  if (wheelLock || Math.abs(e.deltaY)<12) return;
+  wheelLock=true; go(idx + (e.deltaY>0?1:-1)); setTimeout(()=>wheelLock=false,650);
+}, {passive:false});
+
+let touchStartY=null;
+document.getElementById('stage').addEventListener('touchstart', e => { touchStartY=e.touches[0].clientY; });
+document.getElementById('stage').addEventListener('touchend', e => {
+  if (touchStartY===null) return;
+  const dy = touchStartY - e.changedTouches[0].clientY;
+  if (Math.abs(dy)>40) go(idx + (dy>0?1:-1));
+  touchStartY=null;
+});
+render();
+</script>
+</body>
+</html>
